@@ -1,123 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Two-Column Table Form</title>
-    <style>
-        body { font-family: sans-serif; margin: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-        th, td { border: 1px solid #ccc; padding: 8px; vertical-align: middle; }
-        th { background: #f4f4f4; }
-        .sub-col { display: flex; gap: 5px; align-items: center; }
-        textarea { width: 100%; height: 80px; margin-top: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>Order food</title>
 </head>
-<body>
+<body><div class="wrap">
+  <h1 class="sign">Order Now</h1>
+  <p class="sub">Tick your dishes, set the quantity. The total updates by itself.</p>
 
-    <h2>Multi-Column Form</h2>
-    <form id="myForm">
-        <table align="center" style="width: 80%;">
-            <thead>
-                <tr>
-                    <!-- Two Main Columns (Header spans) -->
-                    <th colspan="1">Main Column 1</th>
-                    <th colspan="1">Main Column 2</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <!-- 3 Sub-columns for Main Column 1 -->
-                    <td>
-                        <div class="sub-col">
-                            <img src="menu4.jpg" style="width: 100px; height: 100px" alt="menu 1">
-                            <input type="checkbox" name="chk1" value="Menu 1">
-                            <input type="text" name="txt1_a"  value="Fired rice">
-                            <input type="text" name="txt1_b" style="width: 70px;" value="$2" > 
-                            Quantity&nbsp;  <input type="number" id="qty" min="1" style="width: 70px;" value="1" placeholder="Quantity"> 
-                        </div>
-                    </td>
-
-                    <!-- 3 Sub-columns for Main Column 2 -->
-                    <td>
-                        <div class="sub-col">
-                            <img src="images/TomYumKung.png" style="width: 100px; height: 100px" alt="menu 2">
-                            <input type="checkbox" name="chk4" value="Menu 2">
-                            <input type="text" name="txt4_a" value="Tom Yam kung (Shrimp soup">
-                            <input type="text" name="txt4_b" style="width: 70px;" value="$5">
-                            Quantity&nbsp; <input type="number" id="qty" min="1" style="width: 70px;" value="1" placeholder="Quantity">
-                        </div>
-                    </td>
-                
-                   
-                </tr>
-            </tbody>
-        </table>
-
-        <button type="button" onclick="saveToMessage()" style="font-size: 30px; color:Blue;"> Chosen menu </button>
-        
-        <div>
-            <h3 style="background-color:Blue; color:Yellow; font-size: 30px; text-align:center ">Chosen menu item:</h3>
-            <textarea id="outputMessage" readonly></textarea>
+  <form id="orderForm" action="https://formspree.io/f/mrpgnvyv" method="POST">
+    <div class="cards">
+      <div class="card item" data-name="Fried rice" data-price="2">
+        <img src="1788402104456.png" alt="Fried rice">
+        <div class="body">
+          <span class="name">Fried rice</span>
+          <span class="price">$2</span>
+          <label class="pick" style="margin:0"><input type="checkbox" class="chk"> Choose</label>
+          <label class="pick" style="margin:0">Qty <input type="number" class="qty" min="1" value="1"></label>
         </div>
-        <div>
-        <label for="address" style="font-size: 30px; color:Blue;">Delivery Address:</label><br>
-        <textarea id="address" name="address" required></textarea><br><br>
-         </div>
-        <label for="orderAndaddress" style="font-size: 30px; color:Blue;"> Order and Address:</label><br>
-        <textarea id="orderAndaddress" name="orderAndaddress" required></textarea><br><br>
-         </div>
-    </form>
-
-   <div class="form-container">
-        <h2 style="background-color:Blue; color:Yellow; font-size: 30px; text-align:center "> Send Order to Email</h2>
-        <!-- REPLACE THE ACTION URL WITH YOUR FORMSPREE ENDPOINT -->
-        <form action="https://formspree.io/f/mrpgnvyv" method="POST">
-            <label for="order">Your order:</label>
-            <textarea id="order" name="order" placeholder="Waiting for text ..." ></textarea>
-            <button type="submit">Send order to Email</button>
-        </form>
+      </div>
+      <div class="card item" data-name="Tom Yum Kung (shrimp soup)" data-price="5">
+        <img src="1791426163973.jpg" alt="Tom Yum Kung">
+        <div class="body">
+          <span class="name">Tom Yum Kung (shrimp soup)</span>
+          <span class="price">$5</span>
+          <label class="pick" style="margin:0"><input type="checkbox" class="chk"> Choose</label>
+          <label class="pick" style="margin:0">Qty <input type="number" class="qty" min="1" value="1"></label>
+        </div>
+      </div>
     </div>
-    
-    <script>
-        function saveToMessage() {
-            const form = document.getElementById('myForm');
-            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-            let message = "Selected Items & Values:\n";
 
-            checkboxes.forEach((chk) => {
-                if (chk.checked) {
-                    const parentDiv = chk.closest('.sub-col');
-                    const textInputs = parentDiv.querySelectorAll('input[type="text"], input[type="number"]');                    
-                    let textValues = Array.from(textInputs).map(input => input.value || input.defaultValue).join(', ');
-                    message += `- ${chk.value}: ${textValues}\n`;
-                }
-                
-            });
-       
-            document.getElementById('outputMessage').value = message;
+    <div class="total"><span>Total</span><b>$<span id="total">0</span></b></div>
 
-            var text1 = document.getElementById("outputMessage").value;
-            var text2 = document.getElementById("address").value;
-            // 2. Concatenate them with a space in between
-           // Option A: Template Literals (Recommended)
-           var combined = text1 + "Delivery address : " + text2; 
-           //alert(combined);
-            document.getElementById('orderAndaddress').value =combined;
-            const source1 = document.getElementById("orderAndaddress");
-            const sourceValue = source1.value;
-            alert(sourceValue);
-            document.getElementById('order').value = sourceValue;
-           // const destination1 = document.getElementById('order');
+    <div class="panel">
+      <h3>Your details</h3>
+      <label for="customer">Name</label>
+      <input type="text" id="customer" name="name" required>
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" name="phone" required>
+      <label for="address">Delivery address</label>
+      <textarea id="address" name="address" required></textarea>
+    </div>
 
-            // Updates the second textarea in real-time as you type in the first
-           // source.addEventListener('input', () => {
-           //    destination1.value = sourceValue;
-           //   });
-        
-         }   
-    </script>
+    <div class="panel">
+      <h3>Your order (sent to email)</h3>
+      <textarea id="order" name="order" readonly placeholder="Choose a dish above..."></textarea>
+    </div>
 
+    <p class="error" id="error" role="alert"></p>
+    <p class="center"><button type="submit" class="red">Send order to email</button></p>
+  </form>
 
-    
+  <p class="center"><a class="btn ghost" href="index.html">Back to home</a></p>
+</div>
+<script>
+const items = document.querySelectorAll('.item');
+const orderBox = document.getElementById('order');
+const totalEl = document.getElementById('total');
+const errorEl = document.getElementById('error');
+
+function buildOrder() {
+  let lines = [], total = 0;
+  items.forEach(item => {
+    const on = item.querySelector('.chk').checked;
+    item.classList.toggle('on', on);
+    if (on) {
+      const price = Number(item.dataset.price);
+      const qty = Math.max(1, parseInt(item.querySelector('.qty').value) || 1);
+      total += price * qty;
+      lines.push(`- ${item.dataset.name} x ${qty} = $${price * qty}`);
+    }
+  });
+  totalEl.textContent = total;
+  orderBox.value = lines.length ? "Order:\n" + lines.join("\n") + `\nTotal: $${total}` : "";
+  return lines.length;
+}
+items.forEach(item => item.querySelectorAll('input').forEach(el => {
+  el.addEventListener('input', buildOrder);
+  el.addEventListener('change', buildOrder);
+}));
+document.getElementById('orderForm').addEventListener('submit', e => {
+  errorEl.textContent = "";
+  if (buildOrder() === 0) { e.preventDefault(); errorEl.textContent = "Please choose at least one dish before sending."; }
+});
+buildOrder();
+</script>
 </body>
-  </html>
+              </html>
